@@ -5,7 +5,7 @@ export default function Page() {
   return (
 
     <div>
-      <Navigation/>
+      {/* <Navigation/> */}
       <h1>The wild oasis. Welcome to Paradise</h1>
       <Link href="/cabins">Explore luxry Cabins</Link>
     </div>
