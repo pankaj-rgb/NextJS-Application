@@ -17,7 +17,7 @@ export default async function Pages(){
                 <li key={user.id}>{user.name}</li>
             )}</ul>
 
-            <Counter/>
+            <Counter users={data}/>
         </div>
     );
 }
