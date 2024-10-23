@@ -1,7 +1,9 @@
 export const metadata = {
-    title: "Account",
+    title: "Guest Area",
 }
 
 export default function Pages(){
-    return <h1>Yourr account</h1>
+    return   <h2 className="font-semibold text-2xl text-accent-400 mb-7">
+    Welcome, Pankaj 
+  </h2>
 }
