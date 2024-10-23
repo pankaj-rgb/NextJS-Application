@@ -1,5 +1,5 @@
-import Logo from "./components/logo";
-import Navigation from "./components/navigation";
+import Logo from "@/app/_components/logo";
+import Navigation from "./_components/navigation";
 
 
 
