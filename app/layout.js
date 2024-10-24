@@ -29,8 +29,8 @@ export default function RootLayout({children}){
   return <html lang='en'>
     <body className={`${josefin.className} antialiased bg-primary-950 text-primary-100 min-h-screen flex flex-col relative`}>
       <Header/>
-      <div className="flex-1 px-8 py-12">
-      <main className="max-w-7xl mx-auto ">
+      <div className="flex-1 px-8 py-12 grid">
+      <main className="max-w-7xl mx-auto w-full ">
         {children}  
         {/* become layout for all the children component liek the page in which it is present */}
       </main>
