@@ -58,6 +58,8 @@ export default async function Page({params}) {
               <UsersIcon className="h-5 w-5 text-primary-600" />
               <span className="text-lg">
                 For up to <span className="font-bold">{maxCapacity}</span>{" "}
+                {/* error handling foro the unknown issues */}
+                {/* For up to <span className="font-bold">{capacity.max}</span>{" "} */}
                 guests
               </span>
             </li>
