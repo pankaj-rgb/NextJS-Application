@@ -3,6 +3,16 @@ import CabinList from "../_components/cabinlist";
 import Spinner from "../_components/Spinner";
 
 
+
+//to remove the cache from the server to store the data and show near time changes
+// export const revalidate=0;
+
+//give time to revalidate after a period of time incrmental static Regeneration when you are sure that the data changes not very often
+//but this would work only in the prod env ( npm run prod)
+// export const revalidate=15;
+export const revalidate=3600; 
+/* for an hour revalidate 60*60 */
+
 export const metadata = {
     title: "cabins",
 }

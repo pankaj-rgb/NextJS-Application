@@ -1,7 +1,12 @@
+import { unstable_noStore as noStore } from "next/cache";
 import { getCabins } from "../_lib/data-service";
 import CabinCard from "./CabinCard";
 
 export default async function  CabinList(){
+    /* component for not caching any data for this component , so better than because only 
+    this function is dynamic and not whole route and thu
+    we make this page only dynamic and thus not make cache for this ( Partial Rendering)  using nostore() */
+    // noStore();
     console.log('starting...');
     const cabins = await getCabins();
     console.log(cabins);
