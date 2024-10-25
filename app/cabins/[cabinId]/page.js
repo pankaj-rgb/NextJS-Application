@@ -1,5 +1,6 @@
 import { getCabin, getCabins } from "@/app/_lib/data-service";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
+import { Cabin_Condensed } from "next/font/google";
 import Image from "next/image";
 
 // PLACEHOLDER DATA
@@ -27,6 +28,13 @@ export const metadata={
         return {title:`Cabin ${name}`};
     }
 
+    // for the dynamic page to be as static beforehand
+    export async function generateStaticParams(){
+        const cabins=await getCabins();
+        const ids=cabins.map(cabin=>({cabinId:String(cabin.id)}))
+        console.log("ids values ",ids)
+        return  ids;
+    }
 
 export default async function Page({params}) {
 
