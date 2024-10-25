@@ -18,7 +18,7 @@ function TextExpander({ children }) {
         {isExpanded ? 'Show less' : 'Show more'}
       </button>
       {/* logo here becomes the client  */}
-      <Logo/>
+      {/* <Logo/> */}
     </span>
   );
 }
