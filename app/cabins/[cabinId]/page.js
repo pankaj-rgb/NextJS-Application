@@ -3,7 +3,7 @@ import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 
 // PLACEHOLDER DATA
-const cabin = {
+/* const cabin = {
   id: 89,
   name: "001",
   maxCapacity: 2,
@@ -14,6 +14,19 @@ const cabin = {
   image:
     "https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/cabin-images/cabin-001.jpg",
 };
+ */
+/* 
+//metadata for static values
+export const metadata={
+    title:'Cabin'
+} */
+
+    //for dynamic values metadata could be design in following manner
+    export async function generateMetadata({params}){
+        const {name}=await getCabin(params.cabinId);
+        return {title:`Cabin ${name}`};
+    }
+
 
 export default async function Page({params}) {
 
