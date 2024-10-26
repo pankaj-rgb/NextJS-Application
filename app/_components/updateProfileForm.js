@@ -1,10 +1,10 @@
 'use client'
-import SelectCountry from "@/app/_components/SelectCountry";
+
 import { useState } from "react";
 
 
 
-export default function UpdateProfileForm(){
+export default function UpdateProfileForm({children}){
     const [count,setCount]=useState();
 
       // CHANGE
@@ -38,12 +38,15 @@ return    <form className="bg-primary-900 py-8 px-12 text-lg flex gap-6 flex-col
             />
           </div>
 
-          <SelectCountry
+        {/* this component if call here  gives erorr so we would call it as props from server side to client component */}
+          {/* <SelectCountry
             name="nationality"
             id="nationality"
             className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
             defaultCountry={nationality}
-          />
+          /> */}
+
+          {children}
         </div>
 
         <div className="space-y-2">

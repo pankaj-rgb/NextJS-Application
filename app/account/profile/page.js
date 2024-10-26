@@ -1,3 +1,4 @@
+import SelectCountry from "@/app/_components/SelectCountry";
 import UpdateProfileForm from "@/app/_components/updateProfileForm";
 
 
@@ -6,7 +7,7 @@ export const metadata={
 }
 
 export default function Page() {
-
+  const nationality = "portugal";
 
   return (
     <div>
@@ -19,7 +20,17 @@ export default function Page() {
         faster and smoother. See you soon!
       </p>
 
-      <UpdateProfileForm/>
+    {/* so we update the below one and data and all other details is already fetched from server side so we could call them here  */}
+    {/* <UpdateProfileForm/> */}
+      <UpdateProfileForm>
+
+      <SelectCountry
+            name="nationality"
+            id="nationality"
+            className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
+            defaultCountry={nationality}
+          />
+      </UpdateProfileForm>
     </div>
   );
 }
