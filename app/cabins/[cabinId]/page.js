@@ -1,3 +1,4 @@
+import Cabin from "@/app/_components/cabin";
 import Reservation from "@/app/_components/reservation";
 import Spinner from "@/app/_components/Spinner";
 import TextExpander from "@/app/_components/TextExpander";
@@ -25,107 +26,63 @@ export const metadata={
     title:'Cabin'
 } */
 
-    //for dynamic values metadata could be design in following manner
-    export async function generateMetadata({params}){
-        const {name}=await getCabin(params.cabinId);
-        return {title:`Cabin ${name}`};
-    }
+//for dynamic values metadata could be design in following manner
+export async function generateMetadata({ params }) {
+  const { name } = await getCabin(params.cabinId);
+  return { title: `Cabin ${name}` };
+}
 
-    // for the dynamic page to be as static beforehand
-    export async function generateStaticParams(){
-        const cabins=await getCabins();
-        const ids=cabins.map(cabin=>({cabinId:String(cabin.id)}))
-        console.log("ids values ",ids)
-        return  ids;
-    }
+// for the dynamic page to be as static beforehand
+export async function generateStaticParams() {
+  const cabins = await getCabins();
+  const ids = cabins.map(cabin => ({ cabinId: String(cabin.id) }))
+  console.log("ids values ", ids)
+  return ids;
+}
 
-export default async function Page({params}) {
+export default async function Page({ params }) {
 
-    const cabin=await getCabin(params.cabinId);
-  const { id, name, maxCapacity, regularPrice, discount, image, description } =
-    cabin;
+  const cabin = await getCabin(params.cabinId);
+  // const { id, name, maxCapacity, regularPrice, discount, image, description } =
+  //   cabin;
 
-    // console.log("value is :" ,params);
-    //get the details booked date of the cabin which would be used for future booking
-    // const settings=await getSettings(params.cabinId);
-    // const bookedDates=await getBookedDatesByCabinId(params.cabinId)
+  // console.log("value is :" ,params);
+  //get the details booked date of the cabin which would be used for future booking
+  // const settings=await getSettings(params.cabinId);
+  // const bookedDates=await getBookedDatesByCabinId(params.cabinId)
 
-    //in the above one we could see the following would take time each one and thus will wait before rendering when all are different function
-    //one approach is to use Promise all together but it would take parallel time so need another approach 
-    /* const [cabin,settings,bookedDates]=await Promise.all([
-      getCabin(params.cabinId),
-      getSettings(),
-      getBookedDatesByCabinId(params.cabinId)
-    ]); */
+  //in the above one we could see the following would take time each one and thus will wait before rendering when all are different function
+  //one approach is to use Promise all together but it would take parallel time so need another approach 
+  /* const [cabin,settings,bookedDates]=await Promise.all([
+    getCabin(params.cabinId),
+    getSettings(),
+    getBookedDatesByCabinId(params.cabinId)
+  ]); */
 
-    /* call them inside reservation for the settings, bookedDate */
+  /* call them inside reservation for the settings, bookedDate */
 
   return (
     <div className="max-w-6xl mx-auto mt-8">
-      <div className="grid grid-cols-[3fr_4fr] gap-20 border border-primary-800 py-3 px-10 mb-24">
-        <div className="relative scale-[1.15] -translate-x-3">
-          <Image src={image}
-          fill
-          className="object-cover"
-          alt={`Cabin ${name}`} />
-        </div>
-
-        <div>
-          <h3 className="text-accent-100 font-black text-7xl mb-5 translate-x-[-254px] bg-primary-950 p-6 pb-1 w-[150%]">
-            Cabin {name}
-          </h3>
-
-          <p className="text-lg text-primary-300 mb-10">
-            <TextExpander>
-                {description}
-            </TextExpander>
-            </p>
-
-          <ul className="flex flex-col gap-4 mb-7">
-            <li className="flex gap-3 items-center">
-              <UsersIcon className="h-5 w-5 text-primary-600" />
-              <span className="text-lg">
-                For up to <span className="font-bold">{maxCapacity}</span>{" "}
-                {/* error handling foro the unknown issues */}
-                {/* For up to <span className="font-bold">{capacity.max}</span>{" "} */}
-                guests
-              </span>
-            </li>
-            <li className="flex gap-3 items-center">
-              <MapPinIcon className="h-5 w-5 text-primary-600" />
-              <span className="text-lg">
-                Located in the heart of the{" "}
-                <span className="font-bold">Dolomites</span> (Italy)
-              </span>
-            </li>
-            <li className="flex gap-3 items-center">
-              <EyeSlashIcon className="h-5 w-5 text-primary-600" />
-              <span className="text-lg">
-                Privacy <span className="font-bold">100%</span> guaranteed
-              </span>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <Cabin cabin={cabin}/>
 
       <div>
         <h2 className="text-5xl font-semibold text-center mb-10 text-accent-400">
-          Reserve {name} today. Pay on arrival.
+          Reserve {cabin.name} today. Pay on arrival.
         </h2>
 
-      {/* data selector and reservation form in the cabin id page */}
+        {/* data selector and reservation form in the cabin id page */}
         {/* <div className="grid grid-cols-2 border border-primary-800 min-h-[400px]"> */}
 
-          {/* we need current booked date of the cabin  */}
-          {/* <DateSelector/>
+        {/* we need current booked date of the cabin  */}
+        {/* <DateSelector/>
           <ReservationForm/>
         </div> */}
 
         {/* new approach create a resevation function for the following as the server component so we could use the suspense 
         we could not call the function in client component else they will not be able to find those details  */}
-        
-        <Suspense fallback={<Spinner/>}>
-        <Reservation cabin={cabin}/>
+
+        <Suspense fallback={<Spinner />}>
+          <Reservation cabin={cabin} />
         </Suspense>
       </div>
     </div>
