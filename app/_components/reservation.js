@@ -13,7 +13,7 @@ export default async function Reservation({cabin}) {
     <div className="grid grid-cols-2 border border-primary-800 min-h-[400px]">
 
     {/* we need current booked date of the cabin  */}
-    <DateSelector/>
-    <ReservationForm/>
+    <DateSelector settings={settings} bookedDates={bookedDates} cabin={cabin}/>
+    <ReservationForm cabin={cabin}/>
   </div>)
 }
