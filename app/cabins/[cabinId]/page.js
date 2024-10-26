@@ -1,8 +1,10 @@
+import Reservation from "@/app/_components/reservation";
+import Spinner from "@/app/_components/Spinner";
 import TextExpander from "@/app/_components/TextExpander";
-import { getCabin, getCabins } from "@/app/_lib/data-service";
+import { getBookedDatesByCabinId, getCabin, getCabins, getSettings } from "@/app/_lib/data-service";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
-import { Cabin_Condensed } from "next/font/google";
 import Image from "next/image";
+import { Suspense } from "react";
 
 // PLACEHOLDER DATA
 /* const cabin = {
@@ -43,7 +45,20 @@ export default async function Page({params}) {
   const { id, name, maxCapacity, regularPrice, discount, image, description } =
     cabin;
 
-    console.log("value is :" ,params);
+    // console.log("value is :" ,params);
+    //get the details booked date of the cabin which would be used for future booking
+    // const settings=await getSettings(params.cabinId);
+    // const bookedDates=await getBookedDatesByCabinId(params.cabinId)
+
+    //in the above one we could see the following would take time each one and thus will wait before rendering when all are different function
+    //one approach is to use Promise all together but it would take parallel time so need another approach 
+    /* const [cabin,settings,bookedDates]=await Promise.all([
+      getCabin(params.cabinId),
+      getSettings(),
+      getBookedDatesByCabinId(params.cabinId)
+    ]); */
+
+    /* call them inside reservation for the settings, bookedDate */
 
   return (
     <div className="max-w-6xl mx-auto mt-8">
@@ -94,9 +109,24 @@ export default async function Page({params}) {
       </div>
 
       <div>
-        <h2 className="text-5xl font-semibold text-center">
-          Reserve today. Pay on arrival.
+        <h2 className="text-5xl font-semibold text-center mb-10 text-accent-400">
+          Reserve {name} today. Pay on arrival.
         </h2>
+
+      {/* data selector and reservation form in the cabin id page */}
+        {/* <div className="grid grid-cols-2 border border-primary-800 min-h-[400px]"> */}
+
+          {/* we need current booked date of the cabin  */}
+          {/* <DateSelector/>
+          <ReservationForm/>
+        </div> */}
+
+        {/* new approach create a resevation function for the following as the server component so we could use the suspense 
+        we could not call the function in client component else they will not be able to find those details  */}
+        
+        <Suspense fallback={<Spinner/>}>
+        <Reservation cabin={cabin}/>
+        </Suspense>
       </div>
     </div>
   );
