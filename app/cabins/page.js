@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import CabinList from "../_components/cabinlist";
 import Spinner from "../_components/Spinner";
+import Filter from "../_components/Filter";
 
 
 
@@ -17,9 +18,13 @@ export const metadata = {
     title: "cabins",
 }
 
-export default async function Page() {
+export default async function Page({searchParams}) {
     // CHANGE
-    
+    //for reading file from the client to server only in page ( not in server components)
+    //one you make page dynamic the revalidate part will not work since it is not static and hence the clientList is client rendered
+    console.log(" search Params " ,searchParams);
+    const filter=searchParams?.capacity?? 'all';
+
   
     return (
       <div>
@@ -34,9 +39,15 @@ export default async function Page() {
           away from home. The perfect spot for a peaceful, calm vacation. Welcome
           to paradise.
         </p>
-        <Suspense fallback={<Spinner/>}>
 
-        <CabinList/>
+        {/* since we have used the filter it will removed the suspense to make it working to show the spinner provide the key  */}
+        <Suspense fallback={<Spinner/>} key={filter}>
+        <div className="flex justify-end mb-8">
+        <Filter/>
+
+        </div>
+
+        <CabinList filter={filter}/>
         </Suspense>
       </div>
     );

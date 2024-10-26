@@ -19,6 +19,7 @@ function TextExpander({ children }) {
       </button>
       {/* logo here becomes the client  */}
       {/* <Logo/> */}
+      
     </span>
   );
 }
