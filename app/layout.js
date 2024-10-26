@@ -1,9 +1,6 @@
-import Logo from "@/app/_components/logo";
-import Navigation from "./_components/navigation";
-
-import '@/app/_styles/globals.css'
+import '@/app/_styles/globals.css';
 //we could use any google font without downloading best to download on your server
-import {Josefin_Sans} from "next/font/google";
+import { Josefin_Sans } from "next/font/google";
 import Header from "./_components/Header";
 import { ReservationProvider } from "./_components/ReservationContext";
 

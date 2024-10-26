@@ -7,7 +7,8 @@ const initialState={from:undefined,to:undefined}
 function ReservationProvider({children}){
 //now we will provide range values here for the details which would be use through out the project 
 const [range,setRange]=useState(initialState);
-return <ReservationContext.Provider value={{range,setRange}}>
+const resetRange=()=>setRange(initialState);
+return <ReservationContext.Provider value={{range,setRange,resetRange}}>
     {children}
 </ReservationContext.Provider>
 
