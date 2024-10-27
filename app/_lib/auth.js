@@ -9,6 +9,11 @@ const authConfig={
     })],
     //for database credentials 
     // CredentialProvider 
+    callback:{
+        authorized({auth,requests}){
+            return !!auth?.user; //if user exist true else false
+        }
+    }
 
 };
 
