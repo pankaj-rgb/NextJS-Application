@@ -14,3 +14,5 @@ const authConfig={
 
 //also create route handlers in the api
 export const {auth,handlers:{GET,POST}}  =NextAuth(authConfig);
+
+//http://localhost:3000/api/auth/signin  login pages
