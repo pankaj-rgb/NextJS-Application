@@ -11,13 +11,20 @@ const authConfig={
     // CredentialProvider 
     callback:{
         authorized({auth,requests}){
+            console.log("auth user ",auth?.user);
             return !!auth?.user; //if user exist true else false
         }
-    }
+    },
+    pages:{
+        signIn:"/login",
+    },
 
 };
 
 //also create route handlers in the api
-export const {auth,handlers:{GET,POST}}  =NextAuth(authConfig);
+export const {auth,
+    signIn,
+    signOut,
+    handlers:{GET,POST}}  =NextAuth(authConfig);
 
 //http://localhost:3000/api/auth/signin  login pages
