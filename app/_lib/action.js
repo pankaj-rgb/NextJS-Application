@@ -1,6 +1,7 @@
 //server action files alway  be called to auth not in clients
 'use server';
 
+import { revalidatePath } from "next/cache";
 import { auth, signIn, signOut } from "./auth";
 import { supabase } from "./supabase";
 
@@ -20,13 +21,18 @@ export async function updateProfile(formData){
     const {data, error}=await supabase.from('guests')
                         .update(updateData)
                         .eq("id",session.user.guestId);
+    
+    
+    
                         
-
-    if(error)
-    {
-        throw new Error("guest could not be updated");
-    }
-
+                        
+                        
+                        if(error)
+                            {
+                                throw new Error("guest could not be updated");
+                            }
+//to refresh in real time on the given url path 
+    revalidatePath('/account/profile');
 
 
 
