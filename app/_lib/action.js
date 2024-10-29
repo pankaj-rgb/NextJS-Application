@@ -1,7 +1,37 @@
 //server action files alway  be called to auth not in clients
 'use server';
 
-import { signIn, signOut } from "./auth";
+import { auth, signIn, signOut } from "./auth";
+import { supabase } from "./supabase";
+
+export async function updateProfile(formData){
+    console.log("formdata ",formData);
+    //backend development usr must have authorization and all input as unsafe
+    //auth can be easily used because we are on server 
+    const session=await auth();
+    if(!session) throw new Error('you must be logged in');
+    const nationalID=formData.get('nationalID');
+    const [nationality,countryFlag]=formData.get('nationality').split('%');
+    if(!/^[a-zA-Z0-9]{6,12}$/.test(nationalID)) throw new Error('please provide a  valid national Id');
+    const updateData={nationality,countryFlag,nationalID};
+    console.log("updated data with nationality ", updateData);
+    console.log('update data ',session.user.guestId);
+    
+    const {data, error}=await supabase.from('guests')
+                        .update(updateData)
+                        .eq("id",session.user.guestId);
+                        
+
+    if(error)
+    {
+        throw new Error("guest could not be updated");
+    }
+
+
+
+
+}
+
 
 export async function signInAction(){
     //provider of the signIn
@@ -11,3 +41,4 @@ export async function signInAction(){
 export async function signOutAction(){
     await signOut({redirectTo:'/'});
 }
+

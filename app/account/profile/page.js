@@ -1,13 +1,18 @@
 import SelectCountry from "@/app/_components/SelectCountry";
 import UpdateProfileForm from "@/app/_components/updateProfileForm";
+import { auth } from "@/app/_lib/auth";
+import { getGuest } from "@/app/_lib/data-service";
 
 
 export const metadata={
   title:'Update profile'
 }
 
-export default function Page() {
+export default async function Page() {
   const nationality = "portugal";
+  const session=await auth();
+  const guest =await getGuest(session.user.email);
+
 
   return (
     <div>
@@ -22,13 +27,13 @@ export default function Page() {
 
     {/* so we update the below one and data and all other details is already fetched from server side so we could call them here  */}
     {/* <UpdateProfileForm/> */}
-      <UpdateProfileForm>
+      <UpdateProfileForm guest={guest}>
 
       <SelectCountry
             name="nationality"
             id="nationality"
             className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
-            defaultCountry={nationality}
+            defaultCountry={guest.nationality}
           />
       </UpdateProfileForm>
     </div>
