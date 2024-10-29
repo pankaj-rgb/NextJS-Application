@@ -73,6 +73,7 @@ return    <form
 }
 
 function Button(){
+  //need to render inside a component which is present inside the form , but needs the useclient else need to place in another button and make it useClient
   const {pending}=useFormStatus();
   return <button 
     disabled={pending}
