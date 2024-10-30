@@ -3,10 +3,12 @@
 import { differenceInDays } from "date-fns";
 import { useReservation } from "./ReservationContext";
 import { createBooking } from "../_lib/action";
+import SubmitButton from "./SubmitButton";
 
 function ReservationForm({cabin,user}) {
   // CHANGE
-  const {range}=useReservation();
+  //normally we need the resetrange in this following but not easy to call as it is using the state hook there 
+  const {range,resetRange}=useReservation();
   const {maxCapacity, regularPrice, discount,id} = cabin;
   const startDate=range.from;
   const endDate=range.to;
@@ -49,7 +51,10 @@ function ReservationForm({cabin,user}) {
 
           <p>{String(range.from )} to  {String(range.to)}</p>
       <form 
-      action={createBookingWithData}
+      // action={createBookingWithData}
+      action={async (formData)=>{ await createBookingWithData(formData);
+        resetRange(); //reset the value once we are done with the data post in to the bookings it will reset the range
+      }}
       className='bg-primary-900 py-10 px-16 text-lg flex gap-5 flex-col'>
         <div className='space-y-2'>
           <label htmlFor='numGuests'>How many guests?</label>
@@ -83,11 +88,15 @@ function ReservationForm({cabin,user}) {
         </div>
 
         <div className='flex justify-end items-center gap-6'>
-          <p className='text-primary-300 text-base'>Start by selecting dates</p>
-
-          <button className='bg-accent-500 px-8 py-4 text-primary-800 font-semibold hover:bg-accent-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300'>
+          {!(startDate && endDate) ? (<p className='text-primary-300 text-base'>Start by selecting dates</p>):(
+            <SubmitButton
+            pendingLabel="Reserving..."> 
+             Reserve now
+           </SubmitButton> )}
+        {/*   <button className='bg-accent-500 px-8 py-4 text-primary-800 font-semibold hover:bg-accent-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300'>
             Reserve now
-          </button>
+          </button> */}
+          
         </div>
       </form>
     </div>
