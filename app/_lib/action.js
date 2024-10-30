@@ -3,7 +3,10 @@
 
 import { revalidatePath } from "next/cache";
 import { auth, signIn, signOut } from "./auth";
+import { getBookings } from "./data-service";
 import { supabase } from "./supabase";
+import { redirect } from "next/navigation";
+
 
 export async function updateProfile(formData){
     console.log("formdata ",formData);
@@ -35,6 +38,13 @@ export async function deleteReservation(bookingId) {
     const session = await auth();
     if (!session) throw new Error('You must be logged in ');
 
+    //only user will delete his  data only booking and to prevent other user to use the  details from the curl or rest api hits
+    const guestBooking=await getBookings(session.user.guestId);
+    const guestBookingIds=guestBooking.map((booking)=>booking.id);
+    if(!guestBookingIds.includes(bookingId))
+        throw new Error('you are not allowed to delete this booking');
+
+
     const { error } = await supabase.from('bookings').delete().eq('id', bookingId);
 
     if (error) {
@@ -44,6 +54,49 @@ export async function deleteReservation(bookingId) {
 
     revalidatePath('account/reservations');
 
+}
+
+export async function updateBooking(formData) {
+    console.log(formData);
+
+    const bookingId=Number(formData.get('bookingId'));
+    //Authentication
+  const session = await auth();
+    if (!session) throw new Error('You must be logged in ');
+
+    //only user will delete his  data only booking and to prevent other user to use the  details from the curl or rest api hits
+    //2.Authorization
+    const guestBooking=await getBookings(session.user.guestId);
+    const guestBookingIds=guestBooking.map((booking)=>booking.id);
+    if(!guestBookingIds.includes(bookingId))
+        throw new Error('you are not allowed to delete this booking');
+
+    //3) Update Data
+    const updateData={
+        numGuests:Number(formData.get('numGuests')),
+        observations:formData.get('observations').slice(0,1000)
+    };
+    
+
+    //4) Mutation
+   const {  error } = await supabase
+    .from('bookings')
+    .update(updateData)
+    .eq('id', bookingId)
+    .select()
+    .single();
+
+    //5) error handling
+  if (error) {
+    console.error(error);
+    throw new Error('Booking could not be updated');
+  }
+//6) revalidate need to change the path where value got modified
+revalidatePath(`/account/reservations/edit/${bookingId}`)
+
+  //7) redirecting
+  redirect('/account/reservations')
+  
 }
 
 export async function signInAction(){
