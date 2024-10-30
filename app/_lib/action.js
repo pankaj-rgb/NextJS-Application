@@ -103,6 +103,42 @@ revalidatePath(`/account/reservations/edit/${bookingId}`)
   
 }
 
+
+export async function createBooking(bookingData,formData){
+    //always need to pass binddata first argument  and formData as last argument
+    console.log("creating form ",formData);
+
+    const session = await auth();
+    if (!session) throw new Error('You must be logged in ');
+
+    // Object.entries(formData.entries) in case of we have large number of rows 
+    const newBooking={...bookingData,
+        guestId:session.user.guestId,
+        numGuests:Number(formData.get('numGuests')),
+        observations:formData.get('observations').slice(0,1000),
+        extraPrice:0,
+        totalPrice:bookingData.cabinPrice,
+        isPaid:false,
+        hasBreakfast:false,
+        status:'unconfirmed',
+        
+    };
+
+    // console.log("new booking" ,newBooking);
+
+    const { error } = await supabase
+        .from('bookings')
+        .insert([newBooking])
+
+    if (error) {
+
+        throw new Error('Booking could not be created');
+    }
+
+  
+}
+
+
 export async function signInAction(){
     //provider of the signIn
     await signIn('google',{redirectTo:'/account'});
